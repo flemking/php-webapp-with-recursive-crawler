@@ -1,6 +1,22 @@
 <?php
-include('db/dbconnect.php');
-include('includes/header.php');
+
+/**
+ * Single posts
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+
+/**
+ * Implements session_start().
+ */
+require 'db/dbconnect.php';
+require 'includes/header.php';
 
 if (isset($_REQUEST['id'])) {
     $id = $_REQUEST['id'];
@@ -216,4 +232,4 @@ if (isset($_REQUEST['id'])) {
 <!-- News With Sidebar End -->
 
 <?php
-include('includes/footer.php');
+require 'includes/footer.php';

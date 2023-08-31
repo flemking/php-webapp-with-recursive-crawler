@@ -1,3 +1,18 @@
+<?php
+
+/**
+ * Footer
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+?>
+
 <!-- Footer Start -->
 <div class="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5">
     <div class="row py-4">

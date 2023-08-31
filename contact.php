@@ -1,5 +1,21 @@
 <?php
-include('includes/header.php');
+
+/**
+ * Contact page
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+
+/**
+ * Implements session_start().
+ */
+require 'includes/header.php';
 ?>
 
 
@@ -121,4 +137,4 @@ include('includes/header.php');
 <!-- Contact End -->
 
 <?php
-include('includes/footer.php');
+require 'includes/footer.php';

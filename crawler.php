@@ -1,4 +1,5 @@
 <?php
+
 function crawl_page($url)
 {
     $curl = curl_init();
@@ -11,7 +12,7 @@ function crawl_page($url)
     if ($result) {
         echo $result;
         //Create a new DOM document
-        $dom = new DOMDocument;
+        $dom = new DOMDocument();
 
         @$dom->loadHTML($result);
 
@@ -82,7 +83,7 @@ function start_crawler($url, $base_url = "http://localhost:8888", $depth = 0, $m
 
     if ($result) {
         //Create a new DOM document
-        $dom = new DOMDocument;
+        $dom = new DOMDocument();
 
         @$dom->loadHTML($result);
 
@@ -110,7 +111,7 @@ function start_crawler($url, $base_url = "http://localhost:8888", $depth = 0, $m
             }
             if (strpos($subLink, $base_url) === 0) {
                 $subsLinks[$subLink] = start_crawler($subLink, '', $depth + 1, $maxDepth, $crawledLinks);
-            } else if (strpos($subLink, '/') === 0) {
+            } elseif (strpos($subLink, '/') === 0) {
                 $subLinks[$subLink] = start_crawler("$base_url$subLink", '', $depth + 1, $maxDepth, $crawledLinks);
             } else {
                 $subLinks[$subLink] = start_crawler("$base_url/$subLink", '', $depth + 1, $maxDepth, $crawledLinks);

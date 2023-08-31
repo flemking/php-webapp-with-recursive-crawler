@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Connection to the database
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+
+/**
+ * Implements session_start().
+ */
 session_start();
 
 // Connecting to the database

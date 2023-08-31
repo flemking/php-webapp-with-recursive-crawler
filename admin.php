@@ -1,6 +1,19 @@
 <?php
-include('includes/header.php');
-include('db/dbconnect.php');
+
+/**
+ * Admin interface
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+
+require 'includes/header.php';
+require 'db/dbconnect.php';
 if (!isset($_SESSION["username"])) {
     echo 'Access denied';
     exit();
@@ -20,14 +33,12 @@ if (!isset($_SESSION["username"])) {
 <?php
 $sitemap_query = "SELECT * FROM sitemap";
 $sitemap_result = mysqli_query($connection, $sitemap_query);
-if ($_SESSION['sitemap'] == true) {
-?>
+if ($_SESSION['sitemap'] == true) { ?>
     <form class="w-fit bg-white shadow-md rounded p-8 mx-auto flex flex-col mt-3" style="width: fit-content; padding: 20px; margin-top: 20px;" action="admin.php" method="POST">
-        <button type="submit" style="background-color: #FFCC00;" class="bg-blue hover:bg-blue-700 text-gray font-bold py-2 px-4 my-3 rounded" name="results">See results</button>
-    </form>
-<?php
-}
-?>
+        <button type="submit" style="background-color: #FFCC00;" class="bg-blue hover:bg-blue-700 text-gray font-bold py-2 px-4 my-3 rounded" name="results">
+            See results
+        </button>
+    </form><?php } ?>
 <div style="display: flex; justify-content: space-between; flex-wrap: wrap; padding: 5rem;">
     <?php
     if (isset($_POST['results'])) {
@@ -38,7 +49,7 @@ if ($_SESSION['sitemap'] == true) {
                 $url = $link['url'];
                 echo '<div style="flex-basis: 20%">';
                 echo '<h2>' . $url . '</h2>';
-                echo generate_link_list_html($text);
+                echo Generate_Link_List_html($text);
                 echo '</div>';
             }
         }
@@ -47,7 +58,20 @@ if ($_SESSION['sitemap'] == true) {
 </div>
 <?php
 
-function start_crawler($url, $base_url, $depth = 0, $maxDepth = 1000, &$crawledLinks = [])
+
+
+/**
+ * Implements the crawling script.
+ * 
+ * @param string $url          // URL to crawl
+ * @param string $base_url     // Basename
+ * @param int    $depth        // Current Depth
+ * @param int    $maxDepth     // Maximum depth
+ * @param array  $crawledLinks // List of seen links
+ * 
+ * @return array
+ */
+function Start_crawler($url, $base_url, $depth = 0, $maxDepth = 1000, &$crawledLinks = [])
 {
     if ($depth > $maxDepth || in_array($url, $crawledLinks)) {
         return []; // Stop crawling when maximum depth is reached (also prevent infinite loops)
@@ -63,7 +87,7 @@ function start_crawler($url, $base_url, $depth = 0, $maxDepth = 1000, &$crawledL
 
     if ($result) {
         //Create a new DOM document
-        $dom = new DOMDocument;
+        $dom = new DOMDocument();
 
         @$dom->loadHTML($result);
 
@@ -86,11 +110,11 @@ function start_crawler($url, $base_url, $depth = 0, $maxDepth = 1000, &$crawledL
         $subLinks = [];
         foreach ($uniqueInternalLinks as $subLink => $subText) {
             if (strpos($subLink, $base_url) === 0) {
-                $subsLinks[$subLink] = start_crawler($subLink, '', $depth + 1, $maxDepth, $crawledLinks);
-            } else if (strpos($subLink, '/') === 0) {
-                $subLinks[$subLink] = start_crawler("$base_url$subLink", '', $depth + 1, $maxDepth, $crawledLinks);
+                $subsLinks[$subLink] = Start_crawler($subLink, '/', $depth + 1, $maxDepth, $crawledLinks);
+            } elseif (strpos($subLink, '/') === 0) {
+                $subLinks[$subLink] = Start_crawler("$base_url$subLink", '/', $depth + 1, $maxDepth, $crawledLinks);
             } else {
-                $subLinks[$subLink] = start_crawler("$base_url/$subLink", '', $depth + 1, $maxDepth, $crawledLinks);
+                $subLinks[$subLink] = Start_crawler("$base_url/$subLink", '/', $depth + 1, $maxDepth, $crawledLinks);
             }
         }
         return $subLinks;
@@ -116,11 +140,11 @@ if (isset($_POST['crawl'])) {
     $file = fopen($sitemap, "w") or die("Unable to open file!");
     $sitemap_html = '<h1> HomePage Sitemap </h1><br>';
 
-    foreach (start_crawler($_SERVER['HTTP_HOST'], $_SERVER['HTTP_HOST']) as $the_url => $the_sub_urls) {
+    foreach (Start_crawler($_SERVER['HTTP_HOST'], $_SERVER['HTTP_HOST']) as $the_url => $the_sub_urls) {
 
         $sitemap_html .= '<div class="link-container">';
         $sitemap_html .= '<h2>' . $the_url . '</h2>';
-        $sitemap_html .= generate_link_list_html($the_sub_urls);
+        $sitemap_html .= Generate_Link_List_html($the_sub_urls);
         $sitemap_html .= '</div>';
 
         // saving to DB
@@ -141,7 +165,14 @@ if (isset($_POST['crawl'])) {
     echo "<meta http-equiv='refresh' content='0'>";
 }
 
-function generate_link_list_html($data)
+/**
+ * Implements the crawling script.
+ * 
+ * @param array $data // URL to crawl
+ * 
+ * @return string
+ */
+function Generate_Link_List_html($data)
 {
     if (empty($data)) {
         return '';
@@ -151,7 +182,7 @@ function generate_link_list_html($data)
     foreach ($data as $current_url => $subData) {
         $html .= '<li>';
         $html .= "<a href=$current_url>$current_url</a>";
-        $html .= generate_link_list_html($subData);
+        $html .= Generate_Link_List_html($subData);
         $html .= '</li>';
     }
     $html .= '</ul>';
@@ -159,4 +190,4 @@ function generate_link_list_html($data)
     return $html;
 }
 
-include('includes/footer.php');
+require 'includes/footer.php';

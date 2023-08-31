@@ -1,7 +1,23 @@
 <?php
+
+/**
+ * Homepage
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+
+/**
+ * Implements session_start().
+ */
 $page_title = 'Homepage';
-include('includes/header.php');
-include('db/dbconnect.php');
+require 'includes/header.php';
+require 'db/dbconnect.php';
 ?>
 
 <!-- Main News Slider Start -->
@@ -158,7 +174,8 @@ include('db/dbconnect.php');
                                                                                                     echo $id; ?>><?php echo $title ?></a>
                         </div>
                     </div>
-            <?php }
+            <?php
+                }
             } ?>
         </div>
     </div>
@@ -167,5 +184,5 @@ include('db/dbconnect.php');
 
 
 <?php
-include('news_sidebar.php');
-include('includes/footer.php');
+require 'news_sidebar.php';
+require 'includes/footer.php';

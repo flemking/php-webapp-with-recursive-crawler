@@ -1,5 +1,21 @@
 <?php
-include("db/dbconnect.php");
+
+/**
+ * Login
+ * 
+ * PHP version 7.4
+ * 
+ * @category Web_Application
+ * @package  Crawler
+ * @author   JB <flemking@flemking.com>
+ * @license  MIT License
+ * @link     http://flemking.com.
+ */
+
+/**
+ * Implements session_start().
+ */
+require "db/dbconnect.php";
 session_start();
 ?>
 <?php
@@ -13,7 +29,7 @@ if (isset($_POST['submit'])) {
     $result = mysqli_query($connection, $query);
 
     /* query failed */
-    if ($result == FALSE) {
+    if ($result == false) {
         printf("Query failed \n");
         header("location:login.php");
     }
@@ -42,19 +58,6 @@ if (isset($_POST['submit'])) {
 		";
     }
 }
-//  else {
-//     if (!isset($_SESSION['username'])) {
-//         echo "
-// 			<div class=\"alert alert-danger\" role=\"alert\">
-// 		  <span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>
-// 		  <span class=\"sr-only\">Error:</span>
-// 		   Login Again
-// 			</div>
-// 			";
-//     } else {
-//         header("location:../index.php");
-//     }
-// }
 
 if (isset($_POST['logout'])) {
     // header('Location: ' . $_SERVER['REQUEST_URI']);
@@ -64,7 +67,7 @@ if (isset($_POST['logout'])) {
 ?>
 
 <?php
-include('includes/header.php');
+require 'includes/header.php';
 if (isset($_SESSION['username'])) {
 ?>
     <form class="w-fit bg-white shadow-md rounded p-8 mx-auto" style="width: fit-content; padding: 20px; margin-top: 20px;" action="login.php" method="POST">
@@ -89,4 +92,4 @@ if (isset($_SESSION['username'])) {
 
 <?php
 
-include('includes/footer.php');
+require 'includes/footer.php';
